@@ -1,11 +1,23 @@
 https://leetcode.com/problems/managers-with-at-least-5-direct-reports/description/?envType=study-plan-v2&envId=top-sql-50
 
+without join (using in) : 
+
+select name from employee  
+where id in (
+    select managerid from employee 
+    where managerid is not null 
+    group by managerid
+    having count(managerid) >= 5
+);
+
+with join :
+
 SELECT e.name
 FROM Employee e
-WHERE e.id IN (
+JOIN (
     SELECT managerId
     FROM Employee
-    WHERE managerId IS NOT NULL
-    GROUP BY managerId
+   GROUP BY managerId
     HAVING COUNT(*) >= 5
-);
+) m
+ON e.id = m.managerId;
