@@ -4,8 +4,7 @@ without join (using in) :
 
 select name from employee  
 where id in (
-    select managerid from employee 
-    where managerid is not null 
+    select managerid from employee  
     group by managerid
     having count(managerid) >= 5
 );
