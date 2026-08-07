@@ -1,0 +1,15 @@
+Perfer: 
+
+SELECT *
+FROM users
+WHERE signup_date >= CURDATE() - INTERVAL 30 DAY;
+
+SELECT *
+FROM users
+WHERE signup_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY);
+
+  Not Readable:
+
+SELECT *
+FROM users
+WHERE DATEDIFF(CURDATE(), signup_date) BETWEEN 0 AND 30;
