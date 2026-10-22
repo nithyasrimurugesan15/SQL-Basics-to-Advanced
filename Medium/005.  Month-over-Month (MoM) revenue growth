@@ -1,0 +1,25 @@
+WITH monthly_revenue AS (
+    SELECT
+        DATE_FORMAT(order_date, '%Y-%m') AS month,
+        SUM(amount) AS revenue
+    FROM orders
+    GROUP BY DATE_FORMAT(order_date, '%Y-%m')
+),
+revenue_comparison AS (
+    SELECT
+        month,
+        revenue,
+        LAG(revenue) OVER (ORDER BY month) AS prev_month_revenue
+    FROM monthly_revenue
+)
+SELECT
+    month,
+    revenue,
+    prev_month_revenue,
+    ROUND(
+        (revenue - prev_month_revenue) * 100.0
+        / NULLIF(prev_month_revenue, 0),
+        2
+    ) AS mom_growth_pct
+FROM revenue_comparison
+ORDER BY month;
